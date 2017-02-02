@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        handleSharedText();
     }
 
     // Share Text Content
@@ -47,4 +49,22 @@ public class MainActivity extends AppCompatActivity {
         intent.setType("image/*");
         startActivity(Intent.createChooser(intent, "Share images to.."));
     }
+
+    // Handle Shared Text
+    public void handleSharedText() {
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {    // Handle text being sent
+                String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                if (sharedText != null) {
+                    TextView textShare = (TextView) findViewById(R.id.textShare);
+                    textShare.setText(sharedText);
+                }
+            }
+        }
+    }
+
 }
