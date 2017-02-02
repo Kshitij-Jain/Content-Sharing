@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -28,8 +30,21 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         // Pass URI In Put Extras
-        //  intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(R.mipmap.ic_launcher));
+        // Use Content Provider Or Media Store With Correct Permissions
+        // intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(R.mipmap.ic_launcher));
         intent.setType("image/jpeg");
         startActivity(Intent.createChooser(intent, "Share Image Via"));
+    }
+
+    // Share Multiple Pieces of Content
+    public void shareMultiplePieces(View view) {
+        ArrayList<Uri> uris = new ArrayList<>();
+        uris.add(Uri.parse("Data 1"));
+        uris.add(Uri.parse("Data 2"));
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+        intent.putParcelableArrayListExtra(Intent.EXTRA_TEXT, uris);
+        intent.setType("image/*");
+        startActivity(Intent.createChooser(intent, "Share images to.."));
     }
 }
